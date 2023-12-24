@@ -18,6 +18,8 @@ const signinPayloadSchema = Joi.object().keys({
 async function signin(req, res, next){
   try {
     const payload = req.body;
+    payload.number = normalisePhoneNumber(payload.number);
+
     const {error, value} = signinPayloadSchema.validate(payload);
     if (!!error) {
       return res.status(422).json({
@@ -25,11 +27,10 @@ async function signin(req, res, next){
         error: STATUS_CODES[422],
         message: error.message,
       });
-  }
+    }
   
     const { number, password } = value;
     const user = await userRecordExists(number);
-    console.log("1111111", user);
     if (!user) {
       return res.status(404).json({
         statusCode: 404,

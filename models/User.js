@@ -3,32 +3,39 @@ const db = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const User = db.sequelize.define(
-  "User",
-  {
-    userId: {
-      primaryKey: true,
-      type: DataTypes.UUID,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    number: {
-      type: DataTypes.INTEGER,
-      unique: true,
-      length: 10,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    password: {
-      type: DataTypes.STRING,
+const Number = require("./Number");
+
+const User = db.sequelize.define("User", {
+  userId: {
+    primaryKey: true,
+    type: DataTypes.UUID,
+  },
+  number_Id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: "Number",
+      key: "numberId",
     },
   },
-);
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+});
 
+// association
+User.belongsTo(Number, {foreignKey: "numberId"});
+
+
+// instanceMethods
 User.prototype.matchPassword = async function(password) {
   try {
     const match = await bcrypt.compare(password, this.password);

@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
+const JWT = require("jsonwebtoken");
 const {STATUS_CODES} = require("http");
 
-module.exports = function (req, res, next){
+async function verifyJWT (req, res, next){
   try {
     const {jwt} = req.cookies;
     if(!jwt){
@@ -12,7 +12,7 @@ module.exports = function (req, res, next){
       });
     }
 
-    const decodedData = jwt.verify(jwt, process.env.JWT_SECRET);
+    const decodedData = await JWT.verify(jwt, process.env.JWT_SECRET);
     const {data} = decodedData;
 
     if (!data){
@@ -30,3 +30,5 @@ module.exports = function (req, res, next){
     next(error);
   }
 }
+
+module.exports = verifyJWT;

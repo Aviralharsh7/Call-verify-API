@@ -27,7 +27,7 @@ db.sequelize
     console.log("MYSQL DB connection failed: ", error);
   });
 
-db.sequelize.sync({force: true});
+db.sequelize.sync({force: false});
 
 const {PORT} = value;
 app.listen(PORT, ()=>{

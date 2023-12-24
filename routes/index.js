@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authRouter = require("./auth");
+const searchRouter = require("./search");
 
 router.get("/", (_req, res) =>{
   return res
@@ -11,5 +12,6 @@ router.get("/", (_req, res) =>{
 });
 
 router.use("/auth", authRouter);
+router.use("/search", searchRouter);
 
 module.exports = router;
