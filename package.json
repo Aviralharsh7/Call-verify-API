@@ -2,7 +2,7 @@
   "name": "call-verify-api",
   "version": "1.0.0",
   "description": "A REST api to be consumed by a mobile app, which is somewhat similar to various popular apps which tell you if a number is spam, or allow you to find a person’s name by searching for their phone number",
-  "main": "index.js",
+  "main": "server.js",
   "author": "",
   "license": "ISC",
   "scripts": {
@@ -20,7 +20,11 @@
 
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "joi": "^17.11.0"
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+
+    "mysql2": "^3.6.5",
+    "sequelize": "^6.35.1"
   },
   "devDependencies": {
     "eslint": "^8.46.0",

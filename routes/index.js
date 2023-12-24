@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {createUser} = require("../controllers");
 
 router.get("/", (_req, res) =>{
   return res
@@ -8,5 +9,7 @@ router.get("/", (_req, res) =>{
       message: "Welcome to Call Verify API"
     });
 });
+
+router.post("/create", createUser);
 
 module.exports = router;

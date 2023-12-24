@@ -16,6 +16,19 @@ if (error){
 
 const app = require("./app");
 
+const db = require("./models");
+
+db.sequelize
+  .authenticate()
+  .then(() =>{
+    console.log("Connection to MySQL DB established");
+  })
+  .catch((error)=>{
+    console.log("MYSQL DB connection failed: ", error);
+  });
+
+db.sequelize.sync({force: true});
+
 const {PORT} = value;
 app.listen(PORT, ()=>{
   console.log(`Server running: http://localhost:${PORT}`);
