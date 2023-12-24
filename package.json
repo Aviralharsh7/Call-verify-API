@@ -1,0 +1,32 @@
+{
+  "name": "call-verify-api",
+  "version": "1.0.0",
+  "description": "A REST api to be consumed by a mobile app, which is somewhat similar to various popular apps which tell you if a number is spam, or allow you to find a person’s name by searching for their phone number",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "lint:fix-all": "eslint --fix ."
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "joi": "^17.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.46.0",
+    "nodemon": "^3.0.1"
+  },
+  "pre-commit":[
+    "lint"
+  ]
+}
