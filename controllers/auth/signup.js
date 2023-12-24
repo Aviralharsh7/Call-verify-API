@@ -1,31 +1,32 @@
 const Joi = require("joi");
-const jwt = require("jsonwebtoken");
 const {STATUS_CODES} = require("http");
 
 const normalisePhoneNumber = require("../../utils/normalisePhoneNumber");
 const {userRecordExists, createUser} = require("../../services/userService");
 
-const signupPayloadSchema = Joi.object()
-  .keys({
-    name: Joi.string()
-      .trim()
-      .required()
-      .max(50)
-      .regex(/^[^!@#$%^&*(){}\[\]\\\.;'",.<>/?`~|0-9]*$/)
-      .message("Name should not contain any special character or number"),
+const signupPayloadSchema = Joi.object().keys({
+  name: Joi.string()
+    .trim()
+    .required()
+    .max(50)
+    .regex(/^[^!@#$%^&*(){}\[\]\\\.;'",.<>/?`~|0-9]*$/)
+    .message("Name should not contain any special character or number"),
 
-    number: Joi.string()
-      .trim()
-      .required()
-      .length(10)
-      .message("Number is invalid"),
+  number: Joi.string()
+    .trim()
+    .required()
+    .length(10)
+    .message("Number is invalid"),
 
-    password: Joi.string()
-      .trim()
-      .required(),
-    
-    email: Joi.string().email()
-  });
+  password: Joi.string().trim().required(),
+
+  confirmPassword: Joi.any()
+    .required()
+    .equal(Joi.ref("password"))
+    .messages({ "any.only": "Confirm Password should match password" }),
+
+  email: Joi.string().email(),
+});
 
 async function signup(req, res, next){
   try {
@@ -44,8 +45,8 @@ async function signup(req, res, next){
     }
     
     const {number} = value;
-    const numberExists = await userRecordExists(number);
-    if (numberExists){
+    const recordExists = await userRecordExists(number);
+    if (recordExists){
       return res
         .status(400)
         .json({
@@ -55,6 +56,7 @@ async function signup(req, res, next){
         });
     }
 
+    delete value.confirmPassword;
     const newUser = await createUser(value);
     if (!newUser) {
       return res.status(500).json({

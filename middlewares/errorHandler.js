@@ -1,13 +1,13 @@
 const {STATUS_CODES} = require("http");
 
-const errorHandler = (err, _req, res, _next) =>{
-  console.log(err);
+const errorHandler = (error, _req, res, _next) =>{
+  console.log(error);
   return res
     .status(500)
     .json({
       statusCode: 500,
       error: STATUS_CODES[500],
-      message: err.message,
+      message: error.message,
     });
 };
 
