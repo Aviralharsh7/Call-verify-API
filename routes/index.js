@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {createUser} = require("../controllers");
+const authRouter = require("./auth");
 
 router.get("/", (_req, res) =>{
   return res
@@ -10,6 +10,6 @@ router.get("/", (_req, res) =>{
     });
 });
 
-router.post("/create", createUser);
+router.use("/auth", authRouter);
 
 module.exports = router;

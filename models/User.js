@@ -2,15 +2,14 @@ const {DataTypes} = require("sequelize");
 const db = require("../models");
 
 const User = db.sequelize.define("User", {
-  userId:{
+  userId: {
     primaryKey: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.UUID
   },
-
   name: {
     type: DataTypes.STRING,
   },
-  phoneNumber: {
+  number: {
     type: DataTypes.INTEGER,
     unique: true,
     length: 10,
@@ -22,7 +21,6 @@ const User = db.sequelize.define("User", {
   },
   password: {
     type: DataTypes.STRING
-    // private 
   },
 });
 

@@ -1,6 +1,12 @@
+/**
+ * Normalize a phone number by removing non-numeric characters and taking the last 10 digits.
+ * @param {string} number - The phone number to normalize.
+ * @returns {string} - The normalized phone number.
+ */
 function normalisePhoneNumber(number){
-  // remove special characters
+
   // last 10 digits = excludes country code in front
-  const noramlisedNumber = number.replace(/\D/g, "").slice(-10);
-  return noramlisedNumber; 
+  return number.replace(/\D/g, "").slice(-10);
 }
+
+module.exports = normalisePhoneNumber;

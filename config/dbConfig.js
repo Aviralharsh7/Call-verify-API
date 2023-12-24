@@ -1,8 +1,8 @@
 const dbConfig = {
-  HOST: "dbinstance.cg3gfe0errko.ap-south-1.rds.amazonaws.com",
-  USER: "admin",
-  PASSWORD: "12345678",
-  DB: "testDB",
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
   dialect: "mysql",
 
   pool: {
