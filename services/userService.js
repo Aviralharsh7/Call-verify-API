@@ -1,11 +1,13 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const {numberRecordExists} = require("../services/numberService");
 
 async function userRecordExists(number){
   try {
+    const numberDoc = await numberRecordExists(number); // less time - should not create number if already exists incase of sign in.
     const user = await User.findOne({
-      where:{
-        number: number,
+      where: {
+        number_Id: numberDoc[0].numberId,
       },
     });
     return user;
@@ -15,10 +17,11 @@ async function userRecordExists(number){
   }
 }
 
-async function createUser(data){
+async function createUser(data, number_Id){
   try {
+    delete data.confirmPassword;
     data.password = await bcrypt.hash(data.password, 10);
-    data["userId"] = crypto.randomUUID();
+    data.number_Id = number_Id;
     const response = await User.create(data);
     return response;
   }
@@ -30,4 +33,4 @@ async function createUser(data){
 module.exports = {
   userRecordExists,
   createUser,
-}
+};

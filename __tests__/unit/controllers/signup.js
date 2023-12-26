@@ -50,7 +50,7 @@ describe("Signup Controller", () => {
 
   it("422 - when number is invalid (length > 10)", async () => {
     const mockPayload = { ...mockValidPayload, 
-      number: "123451234512345" }
+      number: "123451234512345" };
 
     const response = await request(app)
       .post("/auth/signup")

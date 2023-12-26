@@ -7,24 +7,24 @@ const UserContact = db.sequelize.define("UserContact", {
   number_Id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "Number",
+      model: Number,
       key: "numberId",
     },
   },
   user_Id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "User",
+      model: User,
       key: "userId",
     },
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });
 
-UserContact.belongsTo(Number, {foreignKey: "numberId" });
-UserContact.belongsTo(User, {foreignKey: "userId" });
+// UserContact.belongsTo(Number, {foreignKey: "numberId" });
+// UserContact.belongsTo(User, {foreignKey: "userId" });
 
 module.exports = UserContact;

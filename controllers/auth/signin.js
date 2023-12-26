@@ -2,6 +2,7 @@ const Joi = require("joi");
 const { STATUS_CODES } = require("http");
 
 const { userRecordExists} = require("../../services/userService");
+const {numberRecordExists} = require("../../services/numberService");
 
 const signinPayloadSchema = Joi.object().keys({
 
@@ -15,10 +16,20 @@ const signinPayloadSchema = Joi.object().keys({
 
 });
 
+/**
+ * @description Validates and authenticates a user based on phone number and password.
+ *              Generates and sets a JSON Web Token (JWT) in a cookie upon successful authentication.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {Object} JSON response indicating the success or failure of the authentication process.
+ */
 async function signin(req, res, next){
   try {
     const payload = req.body;
-    payload.number = normalisePhoneNumber(payload.number);
+    // payload.number = normalisePhoneNumber(payload.number);
 
     const {error, value} = signinPayloadSchema.validate(payload);
     if (!!error) {
@@ -29,8 +40,8 @@ async function signin(req, res, next){
       });
     }
   
-    const { number, password } = value;
-    const user = await userRecordExists(number);
+    const { number, password } = value; 
+    const user = await userRecordExists(number); 
     if (!user) {
       return res.status(404).json({
         statusCode: 404,

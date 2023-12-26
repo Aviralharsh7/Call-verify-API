@@ -1,8 +1,9 @@
 const Joi = require("joi");
 const {STATUS_CODES} = require("http");
 
-const normalisePhoneNumber = require("../../utils/normalisePhoneNumber");
+// const normalisePhoneNumber = require("../../utils/normalisePhoneNumber");
 const {userRecordExists, createUser} = require("../../services/userService");
+const {numberRecordExists} = require("../../services/numberService");
 
 const signupPayloadSchema = Joi.object().keys({
   name: Joi.string()
@@ -23,7 +24,7 @@ const signupPayloadSchema = Joi.object().keys({
   confirmPassword: Joi.any()
     .required()
     .equal(Joi.ref("password"))
-    .messages({ "any.only": "Confirm Password should match password" }),
+    .messages({ "any.only": "confirmPassword should equal password" }),
 
   email: Joi.string().email(),
 });
@@ -31,8 +32,6 @@ const signupPayloadSchema = Joi.object().keys({
 async function signup(req, res, next){
   try {
     const payload = req.body;
-    payload.number = normalisePhoneNumber(payload.number);
-
     const {error, value} = signupPayloadSchema.validate(payload);
     if (!!error){
       return res
@@ -45,8 +44,10 @@ async function signup(req, res, next){
     }
     
     const {number} = value;
-    const recordExists = await userRecordExists(number);
-    if (recordExists){
+    // number = normalisePhoneNumber(number);
+    
+    const userDoc = await userRecordExists(number);
+    if (userDoc){
       return res
         .status(400)
         .json({
@@ -56,13 +57,13 @@ async function signup(req, res, next){
         });
     }
 
-    delete value.confirmPassword;
-    const newUser = await createUser(value);
+    const numberDoc = await numberRecordExists(number);
+    const newUser = await createUser(value, numberDoc[0].numberId);
     if (!newUser) {
       return res.status(500).json({
-          statusCode: 500,
-          error: STATUS_CODES[500],
-          message: "Unexpected error while registering user",
+        statusCode: 500,
+        error: STATUS_CODES[500],
+        message: "Unexpected error while registering user",
       });
     }
 
@@ -70,7 +71,6 @@ async function signup(req, res, next){
       .status(200)
       .json({
         statusCode:200,
-        error: STATUS_CODES[200],
         message: "User registered successfully!"
       });
 

@@ -3,11 +3,11 @@ const router = express.Router();
 const {verifyJWT} = require("../middlewares");
 const {search} = require("../controllers");
 
-router.get(
-  "/:name",
-  verifyJWT, 
-  search.searchByName
-);
+// router.get(
+//   "/:name",
+//   verifyJWT, 
+//   search.searchByName
+// );
 
 router.get(
   "/:number",

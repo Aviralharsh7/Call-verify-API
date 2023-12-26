@@ -12,7 +12,7 @@ const searchNamePayloadSchema = Joi.object().keys({
     .message("Name should not contain any special character or number"),
 });
 
-async function searchByName( req, res, next){
+function searchByName( req, res, next){
   try {
     const payload = req.params;
     const {error, value} = searchNamePayloadSchema.validate(payload);
@@ -45,7 +45,7 @@ const searchNumberPayloadSchema = Joi.object().keys({
 async function searchByNumber(req, res, next) {
   try {
     const payload = req.params;
-    payload = normalisePhoneNumber(payload);
+    // payload = normalisePhoneNumber(payload);
 
     const {error, value} = searchNumberPayloadSchema.validate(payload);
     if (!!error) {
@@ -60,10 +60,15 @@ async function searchByNumber(req, res, next) {
     const user = await userRecordExists(number);
     if (user){
       // const user = getter func 
+      delete user.password; // password should not be returned in user
       return res.status(200).json({
         statusCode: 200,
         message: "User found in registered users",
-        data: user.dataValues,
+        data: {
+          name: user.name,
+          email: user.email,
+          number: number
+        },
       });
     }
 

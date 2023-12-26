@@ -1,4 +1,4 @@
-const {DataTypes} = require("sequelize");
+const { DataTypes } = require("sequelize");
 const db = require("../models");
 
 const User = require("./User");
@@ -8,20 +8,20 @@ const Spam = db.sequelize.define("Spam", {
   number_Id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "Number",
+      model: Number,
       key: "numberId",
     },
   },
   user_Id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "User",
+      model: User,
       key: "userId",
     },
   },
 });
 
-Spam.belongsTo(Number, {foreignKey: "numberId" });
-Spam.belongsTo(User, {foreignKey: "userId" });
+// Spam.belongsTo(Number, {foreignKey: "number_Id" });
+// Spam.belongsTo(User, {foreignKey: "userId" });
 
 module.exports = Spam;
